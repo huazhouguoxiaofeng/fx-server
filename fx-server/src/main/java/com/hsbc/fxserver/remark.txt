@@ -1,0 +1,9 @@
+candidate注：
+1、我的思路是用netty；
+2、netty是一个封装了websocket的框架，我的理解是直接用websocket也可以，查了资料用sse也可以，只是我不熟（在有限的时间内）
+3、该单体中，系统是可以成功启动的，netty也是可以成功启动的，但是不知道为什么就是建立了连接不能返回成功（代码都是一样的，以前工作中从来没有遇到过，好奇怪，估计是哪里少了代码）（如图所示）
+4、用户在进入系统中，会调用 com.hsbc.fxserver.handler.WebSocketHandler.handlerAdded，就把该连接通道加进去了，ImSessionManager.channelGroup 就有该数据了；
+5、在com.hsbc.fxserver.business.FxHandler类中，这是业务代码，拿到了所有的汇率数据，然后通过 ChannelGroup channelGroup = ImSessionManager.channelGroup;
+    获得所有连接，然后遍历调用 channel.writeAndFlush(new TextWebSocketFrame("这是汇率数据")); 方法；就可以做到实时更新了。
+
+期待你的回复，谢谢。
